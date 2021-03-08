@@ -1,0 +1,38 @@
+POST http://localhost:5000/api/user
+Content-Type: application/json
+
+{
+  "uuid": "e4a4975d-6c0c-4555-aea3-984ec300c713",
+  "displayName": "Phan Thanh THanhhhhhhh"
+}
+
+###
+
+PUT http://localhost:5000/api/user?uuid=e4a4975d-6c0c-4555-aea3-984ec300c713
+Content-Type: application/json
+
+{
+  "displayName": "Nguyen Truong Minh Thuan"
+}
+
+###
+
+DELETE http://localhost:5000/api/user?uuid=asdasd
+
+###
+
+GET http://localhost:5000/api/contact?uuid=6bf9b392-3c5c-4936-b97e-21a1cf92337a
+
+###
+
+POST http://localhost:5000/api/contact?uuid=fba9374f-7f79-4887-b5d0-2adbaa273b50
+
+###
+
+PUT http://localhost:5000/api/contact/addcontact?uuid=fba9374f-7f79-4887-b5d0-2adbaa273b50
+Content-Type: application/json
+
+{
+  "uuid": "6bf9b392-3c5c-4936-b97e-21a1cf92337a",
+  "nickname": "PT Thanhh"
+}
