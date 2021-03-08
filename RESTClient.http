@@ -36,3 +36,7 @@ Content-Type: application/json
   "uuid": "6bf9b392-3c5c-4936-b97e-21a1cf92337a",
   "nickname": "PT Thanhh"
 }
+
+###
+
+GET http://localhost:5000/auth
