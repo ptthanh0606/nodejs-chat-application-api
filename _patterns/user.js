@@ -24,3 +24,17 @@ exports.checkUserPutPattern = (reqBody = null, initalMessage) => {
 
   return [isValid, responseMessage];
 };
+
+exports.checkUserLoginBody = (reqBody = null, initialMessage = "") => {
+  let isValid = false;
+  let responseMessage = initialMessage;
+
+  if (!reqBody || !reqBody.email || !reqBody.password) {
+    responseMessage =
+      (!reqBody && "Request body is missing!") ||
+      (!reqBody.email && "email field is missing") ||
+      (!reqBody.password && "password is missing!");
+  } else isValid = true;
+
+  return [isValid, responseMessage];
+};

@@ -3,18 +3,44 @@ const { responsePattern } = require("../../_patterns/response");
 const {
   checkUserPostPattern,
   checkUserPutPattern,
+  checkUserLoginBody,
 } = require("../../_patterns/user");
 
 const router = require("express").Router();
+
+router.post("/login", (req, res) => {
+  const [isValid, responseMessage] = checkUserLoginBody(
+    req.body,
+    "User is existed!"
+  );
+
+  if (isValid) {
+    user.findOne(
+      req.body,
+      {
+        uuid: 1,
+        email: 1,
+        displayName: 1,
+      },
+      (err, result) => {
+        if (err || !result) {
+          res.status(404).send("User not found!");
+        } else {
+          res.send(responsePattern(200, responseMessage, result));
+        }
+      }
+    );
+  } else res.send(responsePattern(400, responseMessage));
+});
 
 router.get("/", (req, res) => {
   if (req.query) {
     let param = {};
 
-    for (const key in req.query) {
+    for (const key in req.body) {
       param = {
         ...param,
-        [key]: req.query[key],
+        [key]: req.body[key],
       };
     }
 

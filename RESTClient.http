@@ -1,3 +1,11 @@
+###
+
+POST http://localhost:5000/api/user/login
+Content-Type: application/json
+
+{"email":"huynhmytram2602@gmail.com","password":"123123123"}
+
+###
 POST http://localhost:5000/api/user
 Content-Type: application/json
 
@@ -40,3 +48,19 @@ Content-Type: application/json
 ###
 
 GET http://localhost:5000/auth
+
+###
+
+GET http://localhost:5000/api/conversation?uuid=6bf9b392-3c5c-4936-b97e-21a1cf92337a
+Content-Type: application/json
+
+###
+POST http://localhost:5000/api/conversation/start-conversation?uuid=6bf9b392-3c5c-4936-b97e-21a1cf92337a
+Content-Type: application/json
+
+[
+  "e926bddc-5fbe-4e7b-afc5-0fa1900d0f57"
+]
+
+###
+GET http://localhost:5000/api/message?conversationid=6040cb58c0be53f4fa6e4977&uuid=6bf9b392-3c5c-4936-b97e-21a1cf92337a

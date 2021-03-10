@@ -4,4 +4,8 @@ const conversationSchema = new mongoose.Schema({
   recipients: [String],
 });
 
-module.exports = mongoose.model("conversation", conversationSchema);
+module.exports = mongoose.model(
+  "conversation",
+  conversationSchema,
+  "conversation"
+);
