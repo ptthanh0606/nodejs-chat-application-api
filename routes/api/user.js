@@ -30,7 +30,7 @@ router.post("/login", (req, res) => {
         }
       }
     );
-  } else res.send(responsePattern(400, responseMessage));
+  } else res.status(400).send(responseMessage);
 });
 
 router.get("/", (req, res) => {
