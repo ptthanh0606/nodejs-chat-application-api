@@ -1,14 +1,12 @@
 const express = require("express");
 const http = require("http");
-
+const socketIO = require("socket.io");
 const cors = require("cors");
 const { json } = require("body-parser");
-require("dotenv").config();
-
 const mongoose = require("mongoose");
-
 const app = express();
 const PORT = 5000;
+require("dotenv").config();
 
 app.use(json());
 app.use(cors());
@@ -24,6 +22,32 @@ mongoose.connection.once("open", () => {
 });
 
 const server = http.createServer(app);
+const io = socketIO(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log(`User ${socket.id} connected to socket`);
+  let conversationIdRoom = "";
+
+  socket.on("OPEN_CONVERSATION", ({ conversationId }) => {
+    socket.join(conversationId);
+
+    conversationIdRoom = conversationId;
+  });
+
+  socket.on("CLIENT_MESSAGE_SEND", (data) => {
+    console.log(data, conversationIdRoom);
+    io.to(conversationIdRoom).emit("MESSAGE_INCOMMING", data);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected", socket.id);
+  });
+});
 
 server.listen(5000, () => {
   console.log("App is listening on port " + PORT);

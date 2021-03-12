@@ -63,4 +63,16 @@ Content-Type: application/json
 ]
 
 ###
-GET http://localhost:5000/api/message?conversationid=6040cb58c0be53f4fa6e4977&uuid=6bf9b392-3c5c-4936-b97e-21a1cf92337a
+GET http://localhost:5000/api/message?conversationId=6040cb58c0be53f4fa6e4977&uuid=6bf9b392-3c5c-4936-b97e-21a1cf92337a
+
+###
+PUT http://localhost:5000/api/message/sendMessage?conversationId=6040cb58c0be53f4fa6e4977&uuid=6bf9b392-3c5c-4936-b97e-21a1cf92337a
+Content-Type: application/json
+
+{
+  "uuid" :"6bf9b392-3c5c-4936-b97e-21a1cf92337a",
+  "content": "New message"
+}
+
+###
+PUT http://localhost:5000/api/message/limit

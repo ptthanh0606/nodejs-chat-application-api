@@ -8,7 +8,7 @@ const { compareArrayEquals } = require("../../_utils/arrayCompare");
 router.get("/", (req, res) => {
   const uuid = req.query.uuid || "";
 
-  contact.findOne({ ownerID: uuid }).then(({ savedPeople }) => {
+  contact.findOne({ ownerID: uuid }).then((contact) => {
     conversation.find({}, (err, result) => {
       if (err) {
         res.status(500).send(err.message);
@@ -25,9 +25,12 @@ router.get("/", (req, res) => {
               return {
                 _id: con.id,
                 recipients: con.recipients.map((rec) => {
-                  const people = savedPeople.find(
-                    (people) => people.uuid === rec
-                  );
+                  const people =
+                    (contact &&
+                      contact.savedPeople.find(
+                        (people) => people.uuid === rec
+                      )) ||
+                    null;
 
                   if (people) {
                     return people.nickname;

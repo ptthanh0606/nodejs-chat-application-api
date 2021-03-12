@@ -1,9 +1,10 @@
 const router = require("express").Router();
 const { message, contact } = require("../../models");
+const { checkSendMessageBody } = require("../../_patterns/message");
 const { responsePattern } = require("../../_patterns/response");
 
 router.get("/", (req, res) => {
-  const conversationId = req.query.conversationid || "";
+  const conversationId = req.query.conversationId || "";
   const uuid = req.query.uuid || "";
 
   if (conversationId && uuid) {
@@ -52,6 +53,59 @@ router.get("/", (req, res) => {
         (!conversationId && "conversationId field is missing") ||
           (!uuid && "uuid field is missing")
       );
+});
+
+router.put("/sendMessage", (req, res) => {
+  console.log("called");
+  const [isValid, responseMsg] = checkSendMessageBody(
+    req.body,
+    "Message sent!"
+  );
+  const conversationId = req.query.conversationId || null;
+
+  if (conversationId) {
+    if (isValid) {
+      message
+        .findOneAndUpdate(
+          { conversationId },
+          {
+            $push: {
+              messages: req.body,
+            },
+          },
+          {
+            useFindAndModify: false,
+          }
+        )
+        .then((result) => {
+          res.status(200).send(responsePattern(200, "Message added!", result));
+        })
+        .catch((err) => {
+          res.status(500).send(responsePattern(500, err.message));
+        });
+    } else res.status(400).send(responsePattern(400, responseMsg));
+  } else
+    res
+      .status(400)
+      .send(responsePattern(400, "Please provide a conversationId to query!"));
+});
+
+router.put("/limit", (req, res) => {
+  const conversationId = "6040caf8c0be53f4fa6e4974";
+  message.findOne({ conversationId }, { messages: 1 }).then(({ messages }) => {
+    let limited = [...messages];
+    limited.length = 3;
+    message
+      .findOneAndUpdate(
+        { conversationId },
+        {
+          $set: {
+            messages: [...limited],
+          },
+        }
+      )
+      .then((result) => res.send(result));
+  });
 });
 
 module.exports = router;
