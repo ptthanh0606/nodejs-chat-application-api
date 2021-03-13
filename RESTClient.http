@@ -55,7 +55,7 @@ GET http://localhost:5000/api/conversation?uuid=6bf9b392-3c5c-4936-b97e-21a1cf92
 Content-Type: application/json
 
 ###
-POST http://localhost:5000/api/conversation/start-conversation?uuid=6bf9b392-3c5c-4936-b97e-21a1cf92337a
+POST http://localhost:5000/api/conversation/startConversation?uuid=6bf9b392-3c5c-4936-b97e-21a1cf92337a
 Content-Type: application/json
 
 [

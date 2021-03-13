@@ -45,7 +45,7 @@ router.get("/", (req, res) => {
   });
 });
 
-router.post("/start-conversation", (req, res) => {
+router.post("/startConversation", (req, res) => {
   const [isValid, responseMessage] = checkStartConversationBody(req.body);
   const uuid = req.query.uuid || "";
 
@@ -64,7 +64,16 @@ router.post("/start-conversation", (req, res) => {
               recipients: [uuid, ...req.body],
             })
             .then((result) =>
-              res.send(responsePattern(200, "Conversation started!", result))
+              message
+                .create({
+                  messages: [],
+                  conversationId: result._id,
+                })
+                .then((msgdoc) => {
+                  res.send(
+                    responsePattern(200, "Conversation started!", result)
+                  );
+                })
             );
         } else {
           conversation.findOne(
