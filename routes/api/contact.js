@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { contact } = require("../../models");
+const { contact, user } = require("../../models");
 const { checkAddContactPutBody } = require("../../_patterns/contact");
 const { responsePattern } = require("../../_patterns/response");
 
@@ -48,19 +48,23 @@ router.put("/addcontact", (req, res) => {
 
   if (isValid) {
     if (uuid) {
-      contact
-        .updateOne(
-          { ownerID: uuid },
-          {
-            $push: { savedPeople: req.body },
-          }
-        )
-        .then((result) => {
-          res.send(responsePattern(200, responseMsg, result));
-        })
-        .catch((err) => {
-          res.send(responsePattern(500, err.message));
-        });
+      user.findOne({ uuid: req.body.uuid }).then((result) => {
+        if (result) {
+          contact
+            .updateOne(
+              { ownerID: uuid },
+              {
+                $push: { savedPeople: req.body },
+              }
+            )
+            .then((result) => {
+              res.send(responsePattern(200, responseMsg, result));
+            })
+            .catch((err) => {
+              res.send(responsePattern(500, err.message));
+            });
+        } else res.status(400).send("User is not existed!");
+      });
     } else res.send(responsePattern(400, "uuid field is missing!"));
   } else {
     res.send(responsePattern(400, responseMsg));

@@ -1,9 +1,8 @@
 const router = require("express").Router();
-const http = require("http");
 const { conversation, message, contact } = require("../../models");
 const { checkStartConversationBody } = require("../../_patterns/conversation");
 const { responsePattern } = require("../../_patterns/response");
-const { compareArrayEquals } = require("../../_utils/arrayCompare");
+const { compareArrayEquals, sortArray } = require("../../_utils/arrayCompare");
 
 router.get("/", (req, res) => {
   const uuid = req.query.uuid || "";
@@ -61,7 +60,7 @@ router.post("/startConversation", (req, res) => {
         if (!filteredResult.length) {
           conversation
             .create({
-              recipients: [uuid, ...req.body],
+              recipients: sortArray([...req.body, uuid]),
             })
             .then((result) =>
               message
@@ -69,7 +68,7 @@ router.post("/startConversation", (req, res) => {
                   messages: [],
                   conversationId: result._id,
                 })
-                .then((msgdoc) => {
+                .then(() => {
                   res.send(
                     responsePattern(200, "Conversation started!", result)
                   );
@@ -77,7 +76,7 @@ router.post("/startConversation", (req, res) => {
             );
         } else {
           conversation.findOne(
-            { recipients: [uuid, ...req.body] },
+            { recipients: sortArray([...req.body, uuid]) },
             (err, doc) => {
               res.send(responsePattern(200, "", doc));
             }

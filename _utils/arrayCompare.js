@@ -12,8 +12,6 @@ exports.compareArrayEquals = function (arr1 = null, arr2 = null) {
 
   if (arr1.length !== arr2.length) return false;
 
-  let isEquals = true;
-
   arr1 = sortArray(arr1);
   arr2 = sortArray(arr2);
 
@@ -23,5 +21,5 @@ exports.compareArrayEquals = function (arr1 = null, arr2 = null) {
     }
   }
 
-  return isEquals;
+  return true;
 };
