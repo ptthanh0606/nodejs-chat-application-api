@@ -5,7 +5,7 @@ const cors = require("cors");
 const { json } = require("body-parser");
 const mongoose = require("mongoose");
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 require("dotenv").config();
 
 app.use(json());
@@ -49,7 +49,7 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(5000, () => {
+server.listen(PORT, () => {
   console.log("App is listening on port " + PORT);
 });
 
