@@ -12,13 +12,10 @@ app.use(json());
 app.use(cors());
 app.use(require("./routes"));
 
-mongoose.connect(
-  "mongodb+srv://sa:123@pt-chatapplication-clus.51xtm.mongodb.net/chatapplicationDB?retryWrites=true&w=majority",
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-);
+mongoose.connect(process.env.MONGOOSE_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 mongoose.connection.once("open", () => {
   console.log("Connected to mongoDB");
