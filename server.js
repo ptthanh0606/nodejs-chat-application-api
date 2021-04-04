@@ -24,7 +24,7 @@ mongoose.connection.once("open", () => {
 const server = http.createServer(app);
 const io = socketIO(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "https://ptthanh0606.github.io"],
     methods: ["GET", "POST", "PUT", "DELETE"],
   },
 });
